@@ -11,6 +11,9 @@
 # production
 /build
 
+# keys
+Constans.js
+
 # misc
 .DS_Store
 .env.local

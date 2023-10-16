@@ -11,7 +11,7 @@ export function MovieStats({ imdbRating, userRating, runtime }) {
       </p>
       <p>
         <span>⏳</span>
-        <span>{runtime} min</span>
+        <span>{runtime}</span>
       </p>
     </>
   );

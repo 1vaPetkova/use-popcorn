@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { API_KEY } from "../Constants";
+import StarRating from "./StarRating";
+import { Loader } from "./Loader";
+import { ErrorMessage } from "./ErrorMessage";
 
-export function MovieDetails({ selectedId, onClose }) {
+export function MovieDetails({ selectedId, onClose, onAdd }) {
   const [details, setDetails] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const {
+    imdbID,
     Title: title,
-    Year: year,
     Poster: poster,
     Runtime: runtime,
     imdbRating,
@@ -36,12 +39,11 @@ export function MovieDetails({ selectedId, onClose }) {
           }
 
           const data = await result.json();
-          console.log(data);
-          if (!data || !data.Search) {
+          setDetails(data);
+          if (!data) {
             throw new Error("No movie details found! :(");
           }
         } catch (err) {
-          console.error(err);
           setErrorMessage(err.message);
         } finally {
           setIsLoading(false);
@@ -57,16 +59,57 @@ export function MovieDetails({ selectedId, onClose }) {
     },
     [selectedId]
   );
+  function handleSetMovieRating(rating) {
+    setDetails({ ...details, userRating: rating });
+  }
+
+  function handleAddToWatched() {
+    onAdd(details);
+  }
 
   return (
     <div className="details">
-      <header>
-        <button className="btn-back" onClick={onClose}>
-          &larr;
-        </button>
-        <img src={poster} alt={details.title} />
-      </header>
-      {selectedId}
+      {isLoading && <Loader />}
+      {!isLoading && !errorMessage && (
+        <>
+          <header>
+            <button className="btn-back" onClick={onClose}>
+              &larr;
+            </button>
+            <img src={poster} alt={title} />
+            <div className="details-overview">
+              <h2>{title}</h2>
+              <p>
+                {released} &bull; {runtime}
+              </p>
+              <p>{genre}</p>
+              <p>
+                <span>⭐</span>
+                {imdbRating} IMDb Rating
+              </p>
+            </div>
+          </header>
+
+          <section>
+            <div className="rating">
+              <StarRating
+                maxRating={10}
+                size={24}
+                onSetRating={(r) => handleSetMovieRating(r)}
+              />
+              <button className="btn-add" onClick={handleAddToWatched}>
+                Add to list
+              </button>
+            </div>
+            <p>
+              <em>{plot}</em>
+            </p>
+            <p>Starring: {actors}</p>
+            <p>Directed: {director}</p>
+          </section>
+        </>
+      )}
+      {errorMessage && <ErrorMessage message={errorMessage} />}
     </div>
   );
 }

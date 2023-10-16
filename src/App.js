@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { tempWatchedData } from "./Data.js";
 import { API_KEY } from "./Constants.js";
 import {
   NavigationBar,
@@ -16,7 +15,7 @@ import { MovieDetails } from "./Components/MovieDetails.js";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -28,6 +27,11 @@ export default function App() {
 
   function handleCloseSelection() {
     setSelectedId(null);
+  }
+
+  function handleAddToWatched(movie) {
+    setWatched(watched.filter((m) => m.imdbID !== movie.imdbID));
+    setWatched((w) => [...w, movie]);
   }
 
   useEffect(
@@ -91,15 +95,12 @@ export default function App() {
             <MovieDetails
               selectedId={selectedId}
               onClose={handleCloseSelection}
+              onAdd={handleAddToWatched}
             />
           ) : (
             <>
               <WatchedSummary movies={watched} />
-              <MoviesList
-                movies={watched}
-                setMovies={(m) => setWatched(m)}
-                showStats={true}
-              />
+              <MoviesList movies={watched} showStats={true} />
             </>
           )}
         </MoviesBox>

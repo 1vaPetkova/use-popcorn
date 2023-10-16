@@ -11,7 +11,7 @@ export function MovieItem({ movie, showStats, onSelectMovie }) {
           <MovieStats
             imdbRating={movie.imdbRating}
             userRating={movie.userRating}
-            runtime={movie.runtime}
+            runtime={movie.Runtime}
           />
         ) : (
           <MovieYear year={movie.Year} />

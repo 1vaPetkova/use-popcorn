@@ -14,7 +14,7 @@ const starContainerStyle = {
 StarRating.propTypes = {
   maxRating: PropTypes.number,
   color: PropTypes.string,
-  size: PropTypes.string,
+  size: PropTypes.number,
   className: PropTypes.string,
   messages: PropTypes.array,
   defaultRating: PropTypes.number,

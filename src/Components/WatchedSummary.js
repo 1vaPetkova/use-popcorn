@@ -10,7 +10,14 @@ export function WatchedSummary({ movies }) {
   const avgUserRating = average(
     movies.map((movie) => movie.userRating)
   ).toFixed(2);
-  const avgRuntime = average(movies.map((movie) => movie.runtime)).toFixed(2);
+  const avgRuntime = average(
+    movies.map((movie) => {
+      if (movie.Runtime === "N/A") {
+        return 0;
+      }
+      return Number(movie.Runtime.split(" ").at(0));
+    })
+  ).toFixed(2);
 
   return (
     <div className="summary">

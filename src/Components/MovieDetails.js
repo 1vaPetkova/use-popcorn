@@ -4,10 +4,12 @@ import StarRating from "./StarRating";
 import { Loader } from "./Loader";
 import { ErrorMessage } from "./ErrorMessage";
 
-export function MovieDetails({ selectedId, onClose, onAdd }) {
+export function MovieDetails({ watched, selectedId, onClose, onAdd }) {
   const [details, setDetails] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const existing = watched.find((w) => w.imdbID === selectedId);
 
   const {
     imdbID,
@@ -49,22 +51,31 @@ export function MovieDetails({ selectedId, onClose, onAdd }) {
           setIsLoading(false);
         }
       }
+
       if (!selectedId) {
         setDetails({});
         setErrorMessage("");
         return;
       }
 
+      const movieFromWatched = watched.find((w) => w.imdbID === selectedId);
+      if (movieFromWatched) {
+        setDetails(movieFromWatched);
+        return;
+      }
+
       getMovieDetails();
     },
-    [selectedId]
+    [selectedId, watched]
   );
+
   function handleSetMovieRating(rating) {
     setDetails({ ...details, userRating: rating });
   }
 
   function handleAddToWatched() {
     onAdd(details);
+    onClose();
   }
 
   return (
@@ -96,9 +107,10 @@ export function MovieDetails({ selectedId, onClose, onAdd }) {
                 maxRating={10}
                 size={24}
                 onSetRating={(r) => handleSetMovieRating(r)}
+                defaultRating={existing?.userRating ?? 0}
               />
               <button className="btn-add" onClick={handleAddToWatched}>
-                Add to list
+                {existing?.userRating ? "Update rating" : "Add to list"}
               </button>
             </div>
             <p>

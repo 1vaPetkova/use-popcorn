@@ -1,6 +1,6 @@
 import { MovieItem } from "./MovieItem";
 
-export function MoviesList({ movies, showStats, onSelect }) {
+export function MoviesList({ movies, showStats, onSelect, onDelete }) {
   return (
     <ul className="list list-movies">
       {movies.map((movie) => (
@@ -9,6 +9,7 @@ export function MoviesList({ movies, showStats, onSelect }) {
           movie={movie}
           showStats={showStats}
           onSelectMovie={onSelect}
+          onDelete={onDelete}
         />
       ))}
     </ul>

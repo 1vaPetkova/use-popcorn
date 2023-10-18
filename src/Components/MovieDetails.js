@@ -78,6 +78,34 @@ export function MovieDetails({ watched, selectedId, onClose, onAdd }) {
     onClose();
   }
 
+  useEffect(
+    function () {
+      document.title = details.Title;
+
+      return function () {
+        document.title = "usePopcorn";
+      };
+    },
+    [details.Title]
+  );
+
+  useEffect(
+    function () {
+      const cb = (e) => {
+        if (e.code === "Escape") {
+          onClose();
+        }
+      };
+
+      document.addEventListener("keydown", cb);
+
+      return function () {
+        document.removeEventListener("keydown", cb);
+      };
+    },
+    [onClose]
+  );
+
   return (
     <div className="details">
       {isLoading && <Loader />}

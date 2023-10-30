@@ -15,11 +15,7 @@ import { MovieDetails } from "./Components/MovieDetails.js";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  // const [watched, setWatched] = useState([]);
-  const [watched, setWatched] = useState(() =>
-    JSON.parse(localStorage.getItem("watched"))
-  );
-
+  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -89,14 +85,6 @@ export default function App() {
       };
     },
     [query]
-  );
-
-  useEffect(
-    function handleAddToWatched() {
-      //Put watched movies into the local storage
-      localStorage.setItem("watched", JSON.stringify(watched));
-    },
-    [watched]
   );
 
   return (

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export function NavigationBar({ children }) {
   return <nav className="nav-bar">{children}</nav>;
@@ -13,6 +13,12 @@ export function ResultsCount({ moviesCount }) {
 }
 
 export function Search({ query, setQuery }) {
+  const inputElement = useRef(null);
+
+  useEffect(function () {
+    inputElement.current.focus();
+  }, []);
+
   return (
     <input
       className="search"
@@ -20,6 +26,7 @@ export function Search({ query, setQuery }) {
       placeholder="Search movies..."
       value={query}
       onChange={(e) => setQuery(e.target.value)}
+      ref={inputElement}
     />
   );
 }

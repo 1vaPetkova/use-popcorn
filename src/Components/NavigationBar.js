@@ -15,9 +15,21 @@ export function ResultsCount({ moviesCount }) {
 export function Search({ query, setQuery }) {
   const inputElement = useRef(null);
 
-  useEffect(function () {
-    inputElement.current.focus();
-  }, []);
+  useEffect(
+    function () {
+      inputElement.current.focus();
+      function cb(e) {
+        if (e.code === "Enter") {
+          inputElement.current.focus();
+          setQuery("");
+        }
+      }
+
+      document.addEventListener("keydown", cb);
+      return () => document.addEventListener("keydown", cb);
+    },
+    [setQuery]
+  );
 
   return (
     <input

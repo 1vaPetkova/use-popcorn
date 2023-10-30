@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { API_KEY } from "../Constants";
 import StarRating from "./StarRating";
 import { Loader } from "./Loader";
@@ -8,8 +8,18 @@ export function MovieDetails({ watched, selectedId, onClose, onAdd }) {
   const [details, setDetails] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const countRef = useRef(0);
 
   const existing = watched.find((w) => w.imdbID === selectedId);
+
+  useEffect(
+    function () {
+      if (details?.userRating) {
+        countRef.current = countRef.current + 1;
+      }
+    },
+    [details?.userRating]
+  );
 
   const {
     imdbID,
@@ -70,7 +80,12 @@ export function MovieDetails({ watched, selectedId, onClose, onAdd }) {
   );
 
   function handleSetMovieRating(rating) {
-    setDetails({ ...details, userRating: rating });
+    setDetails({
+      ...details,
+      userRating: rating,
+      countRatingDecisions: countRef.current,
+    });
+    console.log(details.countRatingDecisions ?? 1);
   }
 
   function handleAddToWatched() {

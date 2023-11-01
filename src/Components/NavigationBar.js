@@ -21,7 +21,6 @@ export function Search({ query, setQuery }) {
       function cb(e) {
         if (e.code === "Enter") {
           inputElement.current.focus();
-          setQuery("");
         }
       }
 

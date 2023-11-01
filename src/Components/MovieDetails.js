@@ -15,7 +15,7 @@ export function MovieDetails({ watched, selectedId, onClose, onAdd }) {
   useEffect(
     function () {
       if (details?.userRating) {
-        countRef.current = countRef.current + 1;
+        countRef.current = countRef.current++;
       }
     },
     [details?.userRating]

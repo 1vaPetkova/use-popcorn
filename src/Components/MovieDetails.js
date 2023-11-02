@@ -3,6 +3,7 @@ import { API_KEY } from "../Constants";
 import StarRating from "./StarRating";
 import { Loader } from "./Loader";
 import { ErrorMessage } from "./ErrorMessage";
+import { useKey } from "../useKey";
 
 export function MovieDetails({ watched, selectedId, onClose, onAdd }) {
   const [details, setDetails] = useState({});
@@ -104,22 +105,7 @@ export function MovieDetails({ watched, selectedId, onClose, onAdd }) {
     [details.Title]
   );
 
-  useEffect(
-    function () {
-      const cb = (e) => {
-        if (e.code === "Escape") {
-          onClose();
-        }
-      };
-
-      document.addEventListener("keydown", cb);
-
-      return function () {
-        document.removeEventListener("keydown", cb);
-      };
-    },
-    [onClose]
-  );
+  useKey("Escape", onClose);
 
   return (
     <div className="details">

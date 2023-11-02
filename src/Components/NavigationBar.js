@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import { useKey } from "../useKey";
 
 export function NavigationBar({ children }) {
   return <nav className="nav-bar">{children}</nav>;
@@ -15,20 +16,12 @@ export function ResultsCount({ moviesCount }) {
 export function Search({ query, setQuery }) {
   const inputElement = useRef(null);
 
-  useEffect(
-    function () {
-      inputElement.current.focus();
-      function cb(e) {
-        if (e.code === "Enter") {
-          inputElement.current.focus();
-        }
-      }
+  useKey("Enter", function () {
+    if (document.activeElement === inputElement.current) return;
 
-      document.addEventListener("keydown", cb);
-      return () => document.addEventListener("keydown", cb);
-    },
-    [setQuery]
-  );
+    inputElement.current.focus();
+    setQuery("");
+  });
 
   return (
     <input

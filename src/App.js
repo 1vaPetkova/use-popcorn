@@ -24,7 +24,6 @@ export default function App() {
     handleCloseSelection
   );
 
-  useLocalStorageState();
   function handleSelect(id) {
     setSelectedId(id === selectedId ? null : id);
   }
